@@ -2,7 +2,7 @@
  * \file
  * \author Rudy Castan
  * \author Jonathan Holmes
- * \author TODO Your Name
+ * \author Taekyung Ho
  * \date 2025 Fall
  * \par CS200 Computer Graphics I
  * \copyright DigiPen Institute of Technology
@@ -37,6 +37,10 @@ namespace CS230
         void LogVerbose(std::string text);
 
     private:
-        // TODO add private fields and helper member functions here
+        Severity                              min_level;
+        std::ofstream                         out_stream;
+        std::chrono::system_clock::time_point start_time;
+        void                                  log(Severity severity, std::string message);
+        double                                seconds_since_start();
     };
 }

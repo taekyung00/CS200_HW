@@ -2,13 +2,14 @@
  * \file
  * \author Rudy Castan
  * \author Jonathan Holmes
- * \author TODO Your Name
+ * \author Taekyung Ho
  * \date 2025 Fall
  * \par CS200 Computer Graphics I
  * \copyright DigiPen Institute of Technology
  */
 
 #pragma once
+#include <SDL.h>
 #include <gsl/gsl>
 #include <vector>
 
@@ -57,6 +58,7 @@ namespace CS230
         };
 
         Input();
+        void Init();
         void Update();
 
         bool KeyDown(Keys key) const;
@@ -64,11 +66,9 @@ namespace CS230
         bool KeyJustPressed(Keys key) const;
 
     private:
-        std::vector<bool> keys_down;
-        std::vector<bool> previous_keys_down;
-
-    private:
-        void SetKeyDown(Keys key, bool value);
+        std::array<bool, static_cast<std::size_t>(Keys::Count)> previousKeys;
+        std::array<bool, static_cast<std::size_t>(Keys::Count)> currentKeys;
+        void                                                    SetKeyDown(Keys key, bool is_pressed);
     };
 
     constexpr Input::Keys& operator++(Input::Keys& the_key) noexcept
@@ -76,6 +76,8 @@ namespace CS230
         the_key = static_cast<Input::Keys>(static_cast<unsigned>(the_key) + 1);
         return the_key;
     }
+
+    SDL_Scancode convert_cs230_to_sdl(Input::Keys cs230_key);
 
     constexpr gsl::czstring to_string(Input::Keys key) noexcept
     {
