@@ -11,7 +11,6 @@ set(SOURCE_CODE
     CS200/RenderingAPI.hpp CS200/RenderingAPI.cpp
     CS200/RGBA.hpp
 
-    # TODO add your demo code here
     Demo/DemoVAO.hpp Demo/DemoVAO.cpp
     Demo/DemoMyModel.hpp Demo/DemoMyModel.cpp
 

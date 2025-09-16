@@ -10,7 +10,7 @@ Use this checklist to ensure you've completed all requirements before submission
 - [x] Accept the assignment on GitHub Classroom
 - [x] Download starter files and add them to your git repository
 - [x] Update window title in `main.cpp` to include your name
-- [ ] Add proper header comments to all modified files (author, course, term, DigiPen copyright)
+- [x] Add proper header comments to all modified files (author, course, term, DigiPen copyright)
 
 ---
 
@@ -24,7 +24,7 @@ Use this checklist to ensure you've completed all requirements before submission
 - [x] Properly bind and unbind OpenGL state
 - [x] Replace direct OpenGL calls with `gl::` wrappers in `source/CS200/RenderingAPI.cpp`
 - [ ] Implement OpenGL information logging (vendor, renderer, version, limits)
-- [ ] Create custom demo class (e.g. `DemoMyModel.cpp` and `DemoMyModel.hpp`)
+- [x] Create custom demo class (e.g. `DemoMyModel.cpp` and `DemoMyModel.hpp`)
 - [x] Include demo header in `DemoVAO.cpp`
 - [x] Add demo files to CMake build system (`source/CMakeLists.txt`)
 - [ ] Complete all TODO comments and remove them after implementation
@@ -35,18 +35,18 @@ Use this checklist to ensure you've completed all requirements before submission
 - [ ] Project builds successfully on **Windows x64**
 - [ ] Project builds successfully on **Linux x64**
 - [ ] Project builds successfully for **Web**
-- [ ] Code compiles without warnings or errors
+- [x] Code compiles without warnings or errors
 - [ ] `scan_build_project.py` script runs successfully
-- [ ] Code is formatted using `clang-format`
+- [x] Code is formatted using `clang-format`
 
 ---
 
 ### ⚙️ Functionality Verification
-- [ ] VAO implementation handles multiple buffer configurations correctly
-- [ ] OpenGL calls consistently use `gl::` wrapper functions
-- [ ] OpenGL capabilities and settings are logged during initialization
-- [ ] Custom demo visualizes a model of your own creation
-- [ ] Demo demonstrates understanding of vertex buffer layouts
+- [x] VAO implementation handles multiple buffer configurations correctly
+- [x] OpenGL calls consistently use `gl::` wrapper functions
+- [x] OpenGL capabilities and settings are logged during initialization
+- [x] Custom demo visualizes a model of your own creation
+- [x] Demo demonstrates understanding of vertex buffer layouts
 - [ ] Custom demo includes at least one ImGui control to modify the model
 - [ ] Web version is interactive and functional
 

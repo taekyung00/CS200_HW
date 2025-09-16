@@ -12,7 +12,6 @@
 #include "OpenGL/GL.hpp"
 #include "OpenGL/Shader.hpp"
 #include "OpenGL/VertexArray.hpp"
-// TODO include header to your Demo
 #include "DemoMyModel.hpp"
 #include <algorithm>
 #include <imgui.h>
@@ -88,8 +87,7 @@ void DemoVAO::DrawImGui()
             ImGui::LabelText("Background Color", "RGB(%.0f,%.0f,%.0f)", static_cast<double>(r * 255), static_cast<double>(g * 255), static_cast<double>(b * 255));
         }
 
-        // TODO uncomment when you have your own demo
-        // Replace STUDENTDEMO with the name of your demo
+
         
         ImGui::Separator();
         if (ImGui::Button("Switch to Taekyung Ho Demo"))
@@ -130,7 +128,7 @@ namespace
     };
 }
 
-void DemoVAO::create_1buffer_struct_of_arrays_style()
+void DemoVAO::create_1buffer_struct_of_arrays_style() //left eye
 {
     constexpr std::array positions = {
         vec2{ -0.2f, 0.2f },
@@ -154,7 +152,7 @@ void DemoVAO::create_1buffer_struct_of_arrays_style()
 
     GL::BindBuffer(GL_ARRAY_BUFFER, leftEyeVertBuffer);
     GL::BufferData(GL_ARRAY_BUFFER, buffer_size, no_data, GL_STATIC_DRAW);
-    GL::BufferSubData(GL_ARRAY_BUFFER, 0, positions_byte_size, positions.data());
+    GL::BufferSubData(GL_ARRAY_BUFFER, 0, positions_byte_size, positions.data()); //?
     GL::BufferSubData(GL_ARRAY_BUFFER, positions_byte_size, colors_byte_size, colors.data());
     GL::BindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -179,7 +177,7 @@ namespace
 
 }
 
-void DemoVAO::create_1buffer_array_of_structs_style()
+void DemoVAO::create_1buffer_array_of_structs_style() //right eye
 {
     constexpr std::array vertices = {
         Vertex{ vec2{ 0.6f, 0.2f }, color3{ 1, 0, 0 } },
@@ -204,7 +202,7 @@ void DemoVAO::create_1buffer_array_of_structs_style()
     rightEyeModel     = OpenGL::CreateVertexArrayObject(layout, rightEyeIndexBuffer);
 }
 
-void DemoVAO::create_parallel_buffers_style()
+void DemoVAO::create_parallel_buffers_style() //mouth //why parallel?
 {
     constexpr std::array positions = {
         vec2{  0.6f, -0.6f },

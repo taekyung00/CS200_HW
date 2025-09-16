@@ -1,6 +1,7 @@
 /**
  * \file
  * \author Rudy Castan
+ * \author Taekyung Ho
  * \date 2025 Fall
  * \par CS200 Computer Graphics I
  * \copyright DigiPen Institute of Technology
@@ -43,13 +44,21 @@ private:
     static constexpr float              saturation = 0.578f;
     static constexpr float              value      = 0.929f;
     OpenGL::CompiledShader              simpleShader{};
-    std::array<OpenGL::BufferHandle, 4> bufferHandles{};
-    std::array<OpenGL::BufferHandle, 3> indexBufferHandles{};
-    OpenGL::VertexArrayHandle           leftEyeModel{}, rightEyeModel{}, mouthModel{};
+    // std::array<OpenGL::BufferHandle, 4> bufferHandles{};
+    // std::array<OpenGL::BufferHandle, 3> indexBufferHandles{};
+    // OpenGL::VertexArrayHandle           leftEyeModel{}, rightEyeModel{}, mouthModel{};
+    std::array<OpenGL::BufferHandle, 5> bufferHandles{};
+    std::array<OpenGL::BufferHandle, 5> indexBufferHandles{};
+    OpenGL::VertexArrayHandle           firstModel{}, secondModel{}, thirdModel{}, forthModel{}, fifthModel{};
 
 private:
     void calculate_and_set_clear_color() const;
-    void create_1buffer_struct_of_arrays_style();
-    void create_1buffer_array_of_structs_style();
-    void create_parallel_buffers_style();
+    // void create_1buffer_struct_of_arrays_style(); //left eye
+    // void create_1buffer_array_of_structs_style(); //right eye
+    // void create_parallel_buffers_style(); //mouth
+    void create_1stmodel_1buffer_array_of_structs_style();
+    void create_2ndmodel_1buffer_array_of_structs_style();
+    void create_3rdmodel_1buffer_array_of_structs_style();
+    void create_4thmodel_1buffer_array_of_structs_style();
+    void create_5thmodel_1buffer_array_of_structs_style();
 };

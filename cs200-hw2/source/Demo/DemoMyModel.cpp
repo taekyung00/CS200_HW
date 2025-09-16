@@ -1,18 +1,19 @@
 /**
  * \file
  * \author Rudy Castan
+ * \author Taekyung Ho
  * \date 2025 Fall
  * \par CS200 Computer Graphics I
  * \copyright DigiPen Institute of Technology
  */
 #include "DemoMyModel.hpp"
 #include "CS200/RenderingAPI.hpp"
+#include "DemoVAO.hpp"
 #include "Engine/Engine.hpp"
 #include "Engine/GameStateManager.hpp"
 #include "OpenGL/GL.hpp"
 #include "OpenGL/Shader.hpp"
 #include "OpenGL/VertexArray.hpp"
-#include "DemoVAO.hpp"
 #include <algorithm>
 #include <imgui.h>
 
@@ -24,17 +25,24 @@ void DemoMyModel::Load()
     GL::GenBuffers(static_cast<GLsizei>(bufferHandles.size()), bufferHandles.data());
     GL::GenBuffers(static_cast<GLsizei>(indexBufferHandles.size()), indexBufferHandles.data());
 
-    create_1buffer_struct_of_arrays_style();
-    create_1buffer_array_of_structs_style();
-    create_parallel_buffers_style();
+    // create_1buffer_struct_of_arrays_style();
+    // create_1buffer_array_of_structs_style();
+    // create_parallel_buffers_style();
+    create_1stmodel_1buffer_array_of_structs_style();
+    create_2ndmodel_1buffer_array_of_structs_style();
+    create_3rdmodel_1buffer_array_of_structs_style();
+    create_4thmodel_1buffer_array_of_structs_style();
+    create_5thmodel_1buffer_array_of_structs_style();
 }
 
 void DemoMyModel::Unload()
 {
     OpenGL::DestroyShader(simpleShader);
-    GL::DeleteVertexArrays(1, &leftEyeModel), leftEyeModel   = 0;
-    GL::DeleteVertexArrays(1, &rightEyeModel), rightEyeModel = 0;
-    GL::DeleteVertexArrays(1, &mouthModel), mouthModel       = 0;
+    GL::DeleteVertexArrays(1, &firstModel), firstModel   = 0;
+    GL::DeleteVertexArrays(1, &secondModel), secondModel = 0;
+    GL::DeleteVertexArrays(1, &thirdModel), thirdModel   = 0;
+    GL::DeleteVertexArrays(1, &forthModel), forthModel   = 0;
+    GL::DeleteVertexArrays(1, &fifthModel), fifthModel   = 0;
     GL::DeleteBuffers(static_cast<GLsizei>(bufferHandles.size()), bufferHandles.data());
     std::fill(std::begin(bufferHandles), std::end(bufferHandles), 0);
     GL::DeleteBuffers(static_cast<GLsizei>(indexBufferHandles.size()), indexBufferHandles.data());
@@ -43,18 +51,20 @@ void DemoMyModel::Unload()
 
 void DemoMyModel::Update()
 {
-    hue += 0.25f;
-    if (hue >= 360.0f)
-        hue -= 360.0f;
+    // hue += 0.25f;
+    // if (hue >= 360.0f)
+    //     hue -= 360.0f;
 }
 
 void DemoMyModel::Draw() const
 {
     constexpr GLsizei        indices_count            = 6;
     constexpr GLenum         primitive_pattern        = GL_TRIANGLES;
-    constexpr GLenum         left_eye_indices_type    = GL_UNSIGNED_INT;
-    constexpr GLenum         right_eye_indices_type   = GL_UNSIGNED_SHORT;
-    constexpr GLenum         mouth_indices_type       = GL_UNSIGNED_BYTE;
+    constexpr GLenum         firstmodel_indices_type  = GL_UNSIGNED_INT;
+    constexpr GLenum         secondmodel_indices_type = GL_UNSIGNED_INT;
+    constexpr GLenum         thirdmodel_indices_type  = GL_UNSIGNED_INT;
+    constexpr GLenum         forthmodel_indices_type  = GL_UNSIGNED_INT;
+    constexpr GLenum         fifthmodel_indices_type  = GL_UNSIGNED_INT;
     constexpr GLvoid*        byte_offset_into_indices = nullptr;
     constexpr OpenGL::Handle no_object                = 0;
 
@@ -63,14 +73,20 @@ void DemoMyModel::Draw() const
 
     GL::UseProgram(simpleShader.Shader);
 
-    GL::BindVertexArray(leftEyeModel);
-    GL::DrawElements(primitive_pattern, indices_count, left_eye_indices_type, byte_offset_into_indices);
+    GL::BindVertexArray(firstModel);
+    GL::DrawElements(primitive_pattern, indices_count, firstmodel_indices_type, byte_offset_into_indices);
 
-    GL::BindVertexArray(rightEyeModel);
-    GL::DrawElements(primitive_pattern, indices_count, right_eye_indices_type, byte_offset_into_indices);
+    GL::BindVertexArray(secondModel);
+    GL::DrawElements(primitive_pattern, indices_count, secondmodel_indices_type, byte_offset_into_indices);
 
-    GL::BindVertexArray(mouthModel);
-    GL::DrawElements(primitive_pattern, indices_count, mouth_indices_type, byte_offset_into_indices);
+    GL::BindVertexArray(thirdModel);
+    GL::DrawElements(primitive_pattern, indices_count, thirdmodel_indices_type, byte_offset_into_indices);
+
+    GL::BindVertexArray(forthModel);
+    GL::DrawElements(primitive_pattern, indices_count, forthmodel_indices_type, byte_offset_into_indices);
+
+    GL::BindVertexArray(fifthModel);
+    GL::DrawElements(primitive_pattern, indices_count, fifthmodel_indices_type, byte_offset_into_indices);
 
     GL::BindVertexArray(no_object);
     GL::UseProgram(no_object);
@@ -87,16 +103,13 @@ void DemoMyModel::DrawImGui()
             ImGui::LabelText("Background Color", "RGB(%.0f,%.0f,%.0f)", static_cast<double>(r * 255), static_cast<double>(g * 255), static_cast<double>(b * 255));
         }
 
-        // TODO uncomment when you have your own demo
-        // Replace STUDENTDEMO with the name of your demo
-        
+
         ImGui::Separator();
         if (ImGui::Button("Switch to VAO Demo"))
         {
             Engine::GetGameStateManager().PopState();
             Engine::GetGameStateManager().PushState<DemoVAO>();
         }
-        
     }
     ImGui::End();
 }
@@ -129,45 +142,6 @@ namespace
     };
 }
 
-void DemoMyModel::create_1buffer_struct_of_arrays_style()
-{
-    constexpr std::array positions = {
-        vec2{ -0.2f, 0.2f },
-        vec2{ -0.2f, 0.6f },
-        vec2{ -0.6f, 0.6f },
-        vec2{ -0.6f, 0.2f }
-    };
-    constexpr auto       positions_byte_size = static_cast<GLsizeiptr>(sizeof(vec2) * positions.size());
-    constexpr std::array colors              = {
-        color3{ 1, 1, 1 },
-        color3{ 1, 0, 0 },
-        color3{ 0, 1, 0 },
-        color3{ 0, 0, 1 }
-    };
-    constexpr auto                    colors_byte_size   = static_cast<GLsizeiptr>(sizeof(color3) * colors.size());
-    constexpr auto                    buffer_size        = positions_byte_size + colors_byte_size;
-    constexpr std::array<unsigned, 6> indices            = { 0, 1, 2, 2, 3, 0 };
-    constexpr const void*             no_data            = nullptr;
-    const auto&                       leftEyeVertBuffer  = bufferHandles[0];
-    const auto&                       leftEyeIndexBuffer = indexBufferHandles[0];
-
-    GL::BindBuffer(GL_ARRAY_BUFFER, leftEyeVertBuffer);
-    GL::BufferData(GL_ARRAY_BUFFER, buffer_size, no_data, GL_STATIC_DRAW);
-    GL::BufferSubData(GL_ARRAY_BUFFER, 0, positions_byte_size, positions.data());
-    GL::BufferSubData(GL_ARRAY_BUFFER, positions_byte_size, colors_byte_size, colors.data());
-    GL::BindBuffer(GL_ARRAY_BUFFER, 0);
-
-    GL::BindBuffer(GL_ELEMENT_ARRAY_BUFFER, leftEyeIndexBuffer);
-    GL::BufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(indices[0]), indices.data(), GL_STATIC_DRAW);
-    GL::BindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-    const auto layout_description = {
-        OpenGL::VertexBuffer{ leftEyeVertBuffer,                      OpenGL::BufferLayout{ { OpenGL::Attribute::Float2 } } },
-        OpenGL::VertexBuffer{ leftEyeVertBuffer, OpenGL::BufferLayout{ positions_byte_size, { OpenGL::Attribute::Float3 } } }
-    };
-    leftEyeModel = OpenGL::CreateVertexArrayObject(layout_description, leftEyeIndexBuffer);
-}
-
 namespace
 {
     struct Vertex
@@ -178,68 +152,142 @@ namespace
 
 }
 
-void DemoMyModel::create_1buffer_array_of_structs_style()
+void DemoMyModel::create_1stmodel_1buffer_array_of_structs_style()
 {
+    constexpr float      r        = 0.819607843137f;
+    constexpr float      g        = 0.706666666666f;
+    constexpr float      b        = 0.988235294118f;
     constexpr std::array vertices = {
-        Vertex{ vec2{ 0.6f, 0.2f }, color3{ 1, 0, 0 } },
-        Vertex{ vec2{ 0.6f, 0.6f }, color3{ 0, 1, 0 } },
-        Vertex{ vec2{ 0.2f, 0.6f }, color3{ 0, 0, 1 } },
-        Vertex{ vec2{ 0.2f, 0.2f }, color3{ 1, 1, 1 } }
+        Vertex{ vec2{ 0.125f, 0.375f }, color3{ r, g, b } },
+        Vertex{ vec2{ 0.125f, -0.25f }, color3{ r, g, b } },
+        Vertex{ vec2{ 0.25f, -0.125f }, color3{ r, g, b } },
+        Vertex{   vec2{ 0.25f, 0.25f }, color3{ r, g, b } }
     };
-    constexpr std::array<unsigned short, 6> indices = { 0, 1, 2, 2, 3, 0 };
+    constexpr std::array<unsigned, 6> indices = { 0, 1, 2, 2, 3, 0 };
 
-    const auto& rightEyeVertBuffer  = bufferHandles[1];
-    const auto& rightEyeIndexBuffer = indexBufferHandles[1];
+    const auto& firstModelVertBuffer  = bufferHandles[0];
+    const auto& firstModelIndexBuffer = indexBufferHandles[0];
 
-    GL::BindBuffer(GL_ARRAY_BUFFER, rightEyeVertBuffer);
+    GL::BindBuffer(GL_ARRAY_BUFFER, firstModelVertBuffer);
     GL::BufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertices[0]), vertices.data(), GL_STATIC_DRAW);
     GL::BindBuffer(GL_ARRAY_BUFFER, 0);
 
-    GL::BindBuffer(GL_ELEMENT_ARRAY_BUFFER, rightEyeIndexBuffer);
+    GL::BindBuffer(GL_ELEMENT_ARRAY_BUFFER, firstModelIndexBuffer);
     GL::BufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(indices[0]), indices.data(), GL_STATIC_DRAW);
     GL::BindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    const auto layout = OpenGL::VertexBuffer{ rightEyeVertBuffer, OpenGL::BufferLayout{ { OpenGL::Attribute::Float2, OpenGL::Attribute::Float3 } } };
-    rightEyeModel     = OpenGL::CreateVertexArrayObject(layout, rightEyeIndexBuffer);
+    const auto layout = OpenGL::VertexBuffer{ firstModelVertBuffer, OpenGL::BufferLayout{ { OpenGL::Attribute::Float2, OpenGL::Attribute::Float3 } } };
+    firstModel        = OpenGL::CreateVertexArrayObject(layout, firstModelIndexBuffer);
 }
 
-void DemoMyModel::create_parallel_buffers_style()
+void DemoMyModel::create_2ndmodel_1buffer_array_of_structs_style()
 {
-    constexpr std::array positions = {
-        vec2{  0.6f, -0.6f },
-        vec2{  0.6f, -0.2f },
-        vec2{ -0.6f, -0.2f },
-        vec2{ -0.6f, -0.6f }
+    constexpr float      r        = 0.623529411765f;
+    constexpr float      g        = 0.454901960784f;
+    constexpr float      b        = 0.847058823529f;
+    constexpr std::array vertices = {
+        Vertex{     vec2{ -0.25f, 0.25f }, color3{ r, g, b } },
+        Vertex{ vec2{ -0.3125f, 0.1875f }, color3{ r, g, b } },
+        Vertex{    vec2{ 0.125f, -0.25f }, color3{ r, g, b } },
+        Vertex{   vec2{ 0.125f, -0.125f }, color3{ r, g, b } }
     };
-    constexpr std::array colors = {
-        color3{ 0, 0, 1 },
-        color3{ 1, 1, 1 },
-        color3{ 1, 0, 0 },
-        color3{ 0, 1, 0 }
-    };
-    constexpr std::array<unsigned char, 6> indices = { 0, 1, 2, 2, 3, 0 };
+    constexpr std::array<unsigned, 6> indices = { 0, 1, 2, 2, 3, 0 };
 
-    const auto& mouthVertBufferPosition = bufferHandles[2];
-    const auto& mouthVertBufferColor    = bufferHandles[3];
-    const auto& mouthIndexBuffer        = indexBufferHandles[2];
+    const auto& secondModelVertBuffer  = bufferHandles[1];
+    const auto& secondModelIndexBuffer = indexBufferHandles[1];
 
-
-    GL::BindBuffer(GL_ARRAY_BUFFER, mouthVertBufferPosition);
-    GL::BufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(positions[0]), positions.data(), GL_STATIC_DRAW);
+    GL::BindBuffer(GL_ARRAY_BUFFER, secondModelVertBuffer);
+    GL::BufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertices[0]), vertices.data(), GL_STATIC_DRAW);
     GL::BindBuffer(GL_ARRAY_BUFFER, 0);
 
-
-    GL::BindBuffer(GL_ARRAY_BUFFER, mouthVertBufferColor);
-    GL::BufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(colors[0]), colors.data(), GL_STATIC_DRAW);
-    GL::BindBuffer(GL_ARRAY_BUFFER, 0);
-
-    GL::BindBuffer(GL_ELEMENT_ARRAY_BUFFER, mouthIndexBuffer);
+    GL::BindBuffer(GL_ELEMENT_ARRAY_BUFFER, secondModelIndexBuffer);
     GL::BufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(indices[0]), indices.data(), GL_STATIC_DRAW);
     GL::BindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    const auto layout_description = {
-        OpenGL::VertexBuffer{ mouthVertBufferPosition, OpenGL::BufferLayout{ { OpenGL::Attribute::Float2 } } },
-        OpenGL::VertexBuffer{    mouthVertBufferColor, OpenGL::BufferLayout{ { OpenGL::Attribute::Float3 } } }
+    const auto layout = OpenGL::VertexBuffer{ secondModelVertBuffer, OpenGL::BufferLayout{ { OpenGL::Attribute::Float2, OpenGL::Attribute::Float3 } } };
+    secondModel       = OpenGL::CreateVertexArrayObject(layout, secondModelIndexBuffer);
+}
+
+void DemoMyModel::create_3rdmodel_1buffer_array_of_structs_style()
+{
+    constexpr float      r        = 0.447058823529f;
+    constexpr float      g        = 0.321568627451f;
+    constexpr float      b        = 0.666666666666f;
+    constexpr std::array vertices = {
+        Vertex{   vec2{ -0.125f, 0.125f }, color3{ r, g, b } },
+        Vertex{ vec2{ -0.0625f, 0.0625f }, color3{ r, g, b } },
+        Vertex{     vec2{ 0.125f, 0.25f }, color3{ r, g, b } },
+        Vertex{    vec2{ 0.125f, 0.375f }, color3{ r, g, b } }
     };
-    mouthModel = OpenGL::CreateVertexArrayObject(layout_description, mouthIndexBuffer);
+    constexpr std::array<unsigned, 6> indices = { 0, 1, 2, 2, 3, 0 };
+
+    const auto& thirdModelVertBuffer  = bufferHandles[2];
+    const auto& thirdModelIndexBuffer = indexBufferHandles[2];
+
+    GL::BindBuffer(GL_ARRAY_BUFFER, thirdModelVertBuffer);
+    GL::BufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertices[0]), vertices.data(), GL_STATIC_DRAW);
+    GL::BindBuffer(GL_ARRAY_BUFFER, 0);
+
+    GL::BindBuffer(GL_ELEMENT_ARRAY_BUFFER, thirdModelIndexBuffer);
+    GL::BufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(indices[0]), indices.data(), GL_STATIC_DRAW);
+    GL::BindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    const auto layout = OpenGL::VertexBuffer{ thirdModelVertBuffer, OpenGL::BufferLayout{ { OpenGL::Attribute::Float2, OpenGL::Attribute::Float3 } } };
+    thirdModel        = OpenGL::CreateVertexArrayObject(layout, thirdModelIndexBuffer);
+}
+
+void DemoMyModel::create_4thmodel_1buffer_array_of_structs_style()
+{
+    constexpr float      r        = 0.447058823529f;
+    constexpr float      g        = 0.321568627451f;
+    constexpr float      b        = 0.666666666666f;
+    constexpr std::array vertices = {
+        Vertex{ vec2{ -0.3125f, -0.0625f }, color3{ r, g, b } },
+        Vertex{    vec2{ -0.25f, -0.125f }, color3{ r, g, b } },
+        Vertex{       vec2{ -0.125f, 0.f }, color3{ r, g, b } },
+        Vertex{  vec2{ -0.1875f, 0.0625f }, color3{ r, g, b } }
+    };
+    constexpr std::array<unsigned, 6> indices = { 0, 1, 2, 2, 3, 0 };
+
+    const auto& forthModelVertBuffer  = bufferHandles[3];
+    const auto& forthModelIndexBuffer = indexBufferHandles[3];
+
+    GL::BindBuffer(GL_ARRAY_BUFFER, forthModelVertBuffer);
+    GL::BufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertices[0]), vertices.data(), GL_STATIC_DRAW);
+    GL::BindBuffer(GL_ARRAY_BUFFER, 0);
+
+    GL::BindBuffer(GL_ELEMENT_ARRAY_BUFFER, forthModelIndexBuffer);
+    GL::BufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(indices[0]), indices.data(), GL_STATIC_DRAW);
+    GL::BindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    const auto layout = OpenGL::VertexBuffer{ forthModelVertBuffer, OpenGL::BufferLayout{ { OpenGL::Attribute::Float2, OpenGL::Attribute::Float3 } } };
+    forthModel        = OpenGL::CreateVertexArrayObject(layout, forthModelIndexBuffer);
+}
+
+void DemoMyModel::create_5thmodel_1buffer_array_of_structs_style()
+{
+    constexpr float      r        = 0.36862745098f;
+    constexpr float      g        = 0.262745098039f;
+    constexpr float      b        = 0.560784313725f;
+    constexpr std::array vertices = {
+        Vertex{  vec2{ -0.3125f, 0.1875f }, color3{ r, g, b } },
+        Vertex{ vec2{ -0.3125f, -0.0625f }, color3{ r, g, b } },
+        Vertex{        vec2{ -0.25f, 0.f }, color3{ r, g, b } },
+        Vertex{     vec2{ -0.25f, 0.125f }, color3{ r, g, b } }
+    };
+    constexpr std::array<unsigned, 6> indices = { 0, 1, 2, 2, 3, 0 };
+
+    const auto& fifthModelVertBuffer  = bufferHandles[4];
+    const auto& fifthModelIndexBuffer = indexBufferHandles[4];
+
+    GL::BindBuffer(GL_ARRAY_BUFFER, fifthModelVertBuffer);
+    GL::BufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertices[0]), vertices.data(), GL_STATIC_DRAW);
+    GL::BindBuffer(GL_ARRAY_BUFFER, 0);
+
+    GL::BindBuffer(GL_ELEMENT_ARRAY_BUFFER, fifthModelIndexBuffer);
+    GL::BufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(indices[0]), indices.data(), GL_STATIC_DRAW);
+    GL::BindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    const auto layout = OpenGL::VertexBuffer{ fifthModelVertBuffer, OpenGL::BufferLayout{ { OpenGL::Attribute::Float2, OpenGL::Attribute::Float3 } } };
+    fifthModel        = OpenGL::CreateVertexArrayObject(layout, fifthModelIndexBuffer);
 }

@@ -1,7 +1,7 @@
 /**
  * \file
  * \author Rudy Castan
- * \author TODO
+ * \author Taekyung Ho
  * \date 2025 Fall
  * \par CS200 Computer Graphics I
  * \copyright DigiPen Institute of Technology
@@ -65,7 +65,6 @@ namespace OpenGL
         // Keep track of the current attribute index (starts at 0)
         [[maybe_unused]] GLuint attribute_index = 0;
 
-        // TODO: Loop over each vertex buffer description in the vertices list
         // Each VertexBuffer contains a buffer_handle and buffer_layout
         // Use structured binding:
         for (const auto& [buffer_handle, buffer_layout] : vertices)
@@ -74,7 +73,6 @@ namespace OpenGL
             // Documentation: https://docs.gl/es3/glBindBuffer
             GL::BindBuffer(GL_ARRAY_BUFFER, buffer_handle);
 
-            // TODO: Calculate the stride (total bytes per vertex)
             // Loop through all attributes in buffer_layout.Attributes
             // Sum up each attr_type.SizeBytes to get the total stride
             [[maybe_unused]] GLsizei stride = 0;
@@ -83,32 +81,26 @@ namespace OpenGL
                 stride += attr_type.SizeBytes;
             }
 
-            // TODO: Get the starting byte offset for this buffer layout
             // Cast buffer_layout.BufferStartingByteOffset to GLintptr
             [[maybe_unused]] GLintptr offset = 0;
             offset                           = static_cast<GLintptr>(buffer_layout.BufferStartingByteOffset);
 
-            // TODO: Loop through each attribute type in buffer_layout.Attributes
             // Use:
             for (Attribute::Type attr_type : buffer_layout.Attributes)
             {
-                // TODO: Skip if attr_type == Attribute::None (continue to next iteration)
                 if (attr_type == Attribute::None)
                 {
                     continue;
                 }
 
-                // TODO: Enable the vertex attribute array for the current attribute_index
                 // Documentation: https://docs.gl/es3/glEnableVertexAttribArray
                 GL::EnableVertexAttribArray(attribute_index);
-                // TODO: Extract attribute properties from attr_type:
                 const GLenum    gl_type         = attr_type.GLType;
                 const GLint     component_count = attr_type.ComponentCount;
                 const GLboolean normalized      = attr_type.Normalize;
                 const bool      is_integer      = attr_type.IntAttribute;
                 const GLuint    divisor         = attr_type.Divisor;
 
-                // TODO: Check if this is an integer attribute (is_integer == true)
                 if (is_integer == true)
                 {
                     // If true:
@@ -127,35 +119,29 @@ namespace OpenGL
                 }
 
 
-                // TODO: Set the vertex attribute divisor for instanced rendering
                 GL::VertexAttribDivisor(attribute_index, divisor);
                 // Parameters: (attribute_index, divisor)
                 // Documentation: https://docs.gl/es3/glVertexAttribDivisor
 
-                // TODO: Increment attribute_index for the next attribute
                 ++attribute_index;
 
-                // TODO: Add attr_type.SizeBytes to offset for the next attribute
                 offset += attr_type.SizeBytes;
             }
         }
 
-        // TODO: Check if index_buffer is not 0 (if an index buffer was provided)
         if (index_buffer != 0)
         {
             // If true:
             //   Bind the index buffer as GL_ELEMENT_ARRAY_BUFFER
-            GL::BindBuffer(GL_ELEMENT_ARRAY_BUFFER,index_buffer);
+            GL::BindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
             //   Documentation: https://docs.gl/es3/glBindBuffer
         }
 
 
-        // TODO: Unbind the VAO by binding 0 to clean up OpenGL state
         GL::BindVertexArray(0);
         // This ensures we don't accidentally modify this VAO later
         // Documentation: https://docs.gl/es3/glBindVertexArray
 
-        // TODO: Return the VAO handle
         return vao;
     }
 

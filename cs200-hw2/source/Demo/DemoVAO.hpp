@@ -49,7 +49,7 @@ private:
 
 private:
     void calculate_and_set_clear_color() const;
-    void create_1buffer_struct_of_arrays_style();
-    void create_1buffer_array_of_structs_style();
-    void create_parallel_buffers_style();
+    void create_1buffer_struct_of_arrays_style(); //left eye
+    void create_1buffer_array_of_structs_style(); //right eye
+    void create_parallel_buffers_style(); //mouth
 };

@@ -1,7 +1,7 @@
 /**
  * \file
  * \author Rudy Castan
- * \author TODO
+ * \author Taekyung Ho
  * \date 2025 Fall
  * \par CS200 Computer Graphics I
  * \copyright DigiPen Institute of Technology
@@ -41,9 +41,8 @@ namespace CS200::RenderingAPI
 {
     void Init() noexcept
     {
-        // TODO use GL:: wrappers
         GLint major = 0, minor = 0;
-        
+
         GL::GetIntegerv(GL_MAJOR_VERSION, &major);
         GL::GetIntegerv(GL_MINOR_VERSION, &minor);
         if (OpenGL::version(major, minor) < OpenGL::version(OpenGL::MinimumRequiredMajorVersion, OpenGL::MinimumRequiredMinorVersion))
@@ -75,7 +74,7 @@ namespace CS200::RenderingAPI
 
         // TODO print opengl settings : GL_VENDOR, GL_RENDERER, GL_VERSION, GL_SHADING_LANGUAGE_VERSION, GL_MAJOR_VERSION, GL_MINOR_VERSION, GL_MAX_ELEMENTS_VERTICES, GL_MAX_ELEMENTS_INDICES,
         // GL_MAX_TEXTURE_IMAGE_UNITS, GL_MAX_TEXTURE_SIZE, GL_MAX_VIEWPORT_DIMS
-        Engine::GetLogger().LogDebug("VENDOR : " + std::to_string(GL_VENDOR));
+        Engine::GetLogger().LogDebug("VENDOR : " + std::to_string(GL_VENDOR)); //?
         Engine::GetLogger().LogDebug("RENDERER : " + std::to_string(GL_RENDERER));
         Engine::GetLogger().LogDebug("VERSION : " + std::to_string(GL_VERSION));
         Engine::GetLogger().LogDebug("SHADING LANGUAGE VERSION : " + std::to_string(GL_SHADING_LANGUAGE_VERSION));
@@ -90,20 +89,17 @@ namespace CS200::RenderingAPI
 
     void SetClearColor(CS200::RGBA color) noexcept
     {
-        // TODO use GL:: wrappers
         const auto rgba = CS200::unpack_color(color);
         GL::ClearColor(rgba[0], rgba[1], rgba[2], rgba[3]);
     }
 
     void Clear() noexcept
     {
-        // TODO use GL:: wrappers
         GL::Clear(GL_COLOR_BUFFER_BIT);
     }
 
     void SetViewport(Math::ivec2 size, Math::ivec2 anchor_left_bottom) noexcept
     {
-        // TODO use GL:: wrappers
         GL::Viewport(anchor_left_bottom.x, anchor_left_bottom.y, size.x, size.y);
     }
 }
