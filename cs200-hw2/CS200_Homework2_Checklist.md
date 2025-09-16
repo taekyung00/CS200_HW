@@ -23,10 +23,10 @@ Use this checklist to ensure you've completed all requirements before submission
 - [x] Implement vertex attribute divisors for instanced rendering
 - [x] Properly bind and unbind OpenGL state
 - [x] Replace direct OpenGL calls with `gl::` wrappers in `source/CS200/RenderingAPI.cpp`
-- [x] Implement OpenGL information logging (vendor, renderer, version, limits)
+- [ ] Implement OpenGL information logging (vendor, renderer, version, limits)
 - [ ] Create custom demo class (e.g. `DemoMyModel.cpp` and `DemoMyModel.hpp`)
-- [ ] Include demo header in `DemoVAO.cpp`
-- [ ] Add demo files to CMake build system (`source/CMakeLists.txt`)
+- [x] Include demo header in `DemoVAO.cpp`
+- [x] Add demo files to CMake build system (`source/CMakeLists.txt`)
 - [ ] Complete all TODO comments and remove them after implementation
 
 ---

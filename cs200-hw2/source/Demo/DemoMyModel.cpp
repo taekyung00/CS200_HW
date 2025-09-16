@@ -12,7 +12,7 @@
 #include "OpenGL/GL.hpp"
 #include "OpenGL/Shader.hpp"
 #include "OpenGL/VertexArray.hpp"
-// TODO include header to your Demo
+#include "DemoVAO.hpp"
 #include <algorithm>
 #include <imgui.h>
 
@@ -89,14 +89,14 @@ void DemoMyModel::DrawImGui()
 
         // TODO uncomment when you have your own demo
         // Replace STUDENTDEMO with the name of your demo
-        /*
+        
         ImGui::Separator();
-        if (ImGui::Button("Switch to STUDENTDEMO Demo"))
+        if (ImGui::Button("Switch to VAO Demo"))
         {
             Engine::GetGameStateManager().PopState();
-            Engine::GetGameStateManager().PushState<STUDENTDEMO>();
+            Engine::GetGameStateManager().PushState<DemoVAO>();
         }
-        */
+        
     }
     ImGui::End();
 }

@@ -27,7 +27,7 @@ public:
 
     gsl::czstring GetName() const override
     {
-        return "Demo VOA";
+        return "Demo Taekyung's Model";
     }
 
 public:

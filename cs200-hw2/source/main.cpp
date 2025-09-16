@@ -7,6 +7,7 @@
 
 
 #include "Demo/DemoVAO.hpp"
+#include "Demo/DemoMyModel.hpp"
 #include "Engine/Engine.hpp"
 #include "Engine/GameStateManager.hpp"
 #include "Engine/Window.hpp"
@@ -65,6 +66,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     Engine& engine = Engine::Instance();
     engine.Start("Taekyung Ho CS200 HW2"); // TODO put your full name here
     engine.GetGameStateManager().PushState<DemoVAO>();
+    engine.GetGameStateManager().PushState<DemoMyModel>();
 
 #if !defined(__EMSCRIPTEN__)
     while (engine.HasGameEnded() == false)
