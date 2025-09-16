@@ -15,6 +15,8 @@
 #include <GL/glew.h>
 #include <cassert>
 
+#include "OpenGL/GL.hpp"
+
 namespace
 {
 #if defined(DEVELOPER_VERSION) && not defined(IS_WEBGL2)
@@ -41,8 +43,9 @@ namespace CS200::RenderingAPI
     {
         // TODO use GL:: wrappers
         GLint major = 0, minor = 0;
-        glGetIntegerv(GL_MAJOR_VERSION, &major);
-        glGetIntegerv(GL_MINOR_VERSION, &minor);
+        
+        GL::GetIntegerv(GL_MAJOR_VERSION, &major);
+        GL::GetIntegerv(GL_MINOR_VERSION, &minor);
         if (OpenGL::version(major, minor) < OpenGL::version(OpenGL::MinimumRequiredMajorVersion, OpenGL::MinimumRequiredMinorVersion))
             throw_error_message("Unsupported OpenGL version ", major, '.', minor, "\n We need OpenGL ", OpenGL::MinimumRequiredMajorVersion, '.', OpenGL::MinimumRequiredMinorVersion, " or higher");
 
@@ -52,44 +55,55 @@ namespace CS200::RenderingAPI
             OpenGL::MinorVersion = minor;
         }
 
-        glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &OpenGL::MaxTextureImageUnits);
-        glGetIntegerv(GL_MAX_TEXTURE_SIZE, &OpenGL::MaxTextureSize);
+        GL::GetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &OpenGL::MaxTextureImageUnits);
+        GL::GetIntegerv(GL_MAX_TEXTURE_SIZE, &OpenGL::MaxTextureSize);
 
 #if defined(DEVELOPER_VERSION) && not defined(IS_WEBGL2)
         // Debug callback functionality requires OpenGL 4.3+ or KHR_debug extension
         if (OpenGL::current_version() >= OpenGL::version(4, 3))
         {
-            glEnable(GL_DEBUG_OUTPUT);
-            glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-            glDebugMessageCallback(OpenGLMessageCallback, nullptr);
-            glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
+            GL::Enable(GL_DEBUG_OUTPUT);
+            GL::Enable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+            GL::DebugMessageCallback(OpenGLMessageCallback, nullptr);
+            GL::DebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
         }
 #endif
 
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glDisable(GL_DEPTH_TEST);
+        GL::Enable(GL_BLEND);
+        GL::BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        GL::Disable(GL_DEPTH_TEST);
 
         // TODO print opengl settings : GL_VENDOR, GL_RENDERER, GL_VERSION, GL_SHADING_LANGUAGE_VERSION, GL_MAJOR_VERSION, GL_MINOR_VERSION, GL_MAX_ELEMENTS_VERTICES, GL_MAX_ELEMENTS_INDICES,
         // GL_MAX_TEXTURE_IMAGE_UNITS, GL_MAX_TEXTURE_SIZE, GL_MAX_VIEWPORT_DIMS
+        Engine::GetLogger().LogDebug("VENDOR : " + std::to_string(GL_VENDOR));
+        Engine::GetLogger().LogDebug("RENDERER : " + std::to_string(GL_RENDERER));
+        Engine::GetLogger().LogDebug("VERSION : " + std::to_string(GL_VERSION));
+        Engine::GetLogger().LogDebug("SHADING LANGUAGE VERSION : " + std::to_string(GL_SHADING_LANGUAGE_VERSION));
+        Engine::GetLogger().LogDebug("MAJOR VERSION : " + std::to_string(GL_MAJOR_VERSION));
+        Engine::GetLogger().LogDebug("MINOR VERSION : " + std::to_string(GL_MINOR_VERSION));
+        Engine::GetLogger().LogDebug("MAX ELEMENTS VERTICES : " + std::to_string(GL_MAX_ELEMENTS_VERTICES));
+        Engine::GetLogger().LogDebug("MAX ELEMENTS INDICES : " + std::to_string(GL_MAX_ELEMENTS_INDICES));
+        Engine::GetLogger().LogDebug("MAX TEXTURE IMAGE UNITS : " + std::to_string(GL_MAX_TEXTURE_IMAGE_UNITS));
+        Engine::GetLogger().LogDebug("MAX TEXTURE SIZE : " + std::to_string(GL_MAX_TEXTURE_SIZE));
+        Engine::GetLogger().LogDebug("MAX VIEWPORT DIMS : " + std::to_string(GL_MAX_VIEWPORT_DIMS));
     }
 
     void SetClearColor(CS200::RGBA color) noexcept
     {
         // TODO use GL:: wrappers
         const auto rgba = CS200::unpack_color(color);
-        glClearColor(rgba[0], rgba[1], rgba[2], rgba[3]);
+        GL::ClearColor(rgba[0], rgba[1], rgba[2], rgba[3]);
     }
 
     void Clear() noexcept
     {
         // TODO use GL:: wrappers
-        glClear(GL_COLOR_BUFFER_BIT);
+        GL::Clear(GL_COLOR_BUFFER_BIT);
     }
 
     void SetViewport(Math::ivec2 size, Math::ivec2 anchor_left_bottom) noexcept
     {
         // TODO use GL:: wrappers
-        glViewport(anchor_left_bottom.x, anchor_left_bottom.y, size.x, size.y);
+        GL::Viewport(anchor_left_bottom.x, anchor_left_bottom.y, size.x, size.y);
     }
 }

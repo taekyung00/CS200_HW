@@ -46,6 +46,7 @@ namespace CS230
 
     void Window::Clear(CS200::RGBA color)
     {
+        CS200::RenderingAPI::SetViewport(size);
         CS200::RenderingAPI::SetClearColor(color);
         CS200::RenderingAPI::Clear();
     }

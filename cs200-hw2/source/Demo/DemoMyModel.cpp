@@ -5,7 +5,7 @@
  * \par CS200 Computer Graphics I
  * \copyright DigiPen Institute of Technology
  */
-#include "DemoVAO.hpp"
+#include "DemoMyModel.hpp"
 #include "CS200/RenderingAPI.hpp"
 #include "Engine/Engine.hpp"
 #include "Engine/GameStateManager.hpp"
@@ -13,11 +13,10 @@
 #include "OpenGL/Shader.hpp"
 #include "OpenGL/VertexArray.hpp"
 // TODO include header to your Demo
-#include "DemoMyModel.hpp"
 #include <algorithm>
 #include <imgui.h>
 
-void DemoVAO::Load()
+void DemoMyModel::Load()
 {
     using filepath = std::filesystem::path;
     simpleShader   = OpenGL::CreateShader(filepath{ "Assets/shaders/pass_thru_pos2d_clr.vert" }, filepath{ "Assets/shaders/basic_vtx_clr_attribute.frag" });
@@ -30,7 +29,7 @@ void DemoVAO::Load()
     create_parallel_buffers_style();
 }
 
-void DemoVAO::Unload()
+void DemoMyModel::Unload()
 {
     OpenGL::DestroyShader(simpleShader);
     GL::DeleteVertexArrays(1, &leftEyeModel), leftEyeModel   = 0;
@@ -42,14 +41,14 @@ void DemoVAO::Unload()
     std::fill(std::begin(indexBufferHandles), std::end(indexBufferHandles), 0);
 }
 
-void DemoVAO::Update()
+void DemoMyModel::Update()
 {
     hue += 0.25f;
     if (hue >= 360.0f)
         hue -= 360.0f;
 }
 
-void DemoVAO::Draw() const
+void DemoMyModel::Draw() const
 {
     constexpr GLsizei        indices_count            = 6;
     constexpr GLenum         primitive_pattern        = GL_TRIANGLES;
@@ -77,7 +76,7 @@ void DemoVAO::Draw() const
     GL::UseProgram(no_object);
 }
 
-void DemoVAO::DrawImGui()
+void DemoMyModel::DrawImGui()
 {
     ImGui::Begin("Program Info");
     {
@@ -90,24 +89,24 @@ void DemoVAO::DrawImGui()
 
         // TODO uncomment when you have your own demo
         // Replace STUDENTDEMO with the name of your demo
-        
+        /*
         ImGui::Separator();
-        if (ImGui::Button("Switch to Taekyung Ho Demo"))
+        if (ImGui::Button("Switch to STUDENTDEMO Demo"))
         {
             Engine::GetGameStateManager().PopState();
-            Engine::GetGameStateManager().PushState<DemoMyModel>();
+            Engine::GetGameStateManager().PushState<STUDENTDEMO>();
         }
-        
+        */
     }
     ImGui::End();
 }
 
-DemoVAO::~DemoVAO()
+DemoMyModel::~DemoMyModel()
 {
     Unload();
 }
 
-void DemoVAO::calculate_and_set_clear_color() const
+void DemoMyModel::calculate_and_set_clear_color() const
 {
     float r = 0, g = 0, b = 0;
     ImGui::ColorConvertHSVtoRGB(hue / 360.0f, saturation, value, r, g, b);
@@ -130,7 +129,7 @@ namespace
     };
 }
 
-void DemoVAO::create_1buffer_struct_of_arrays_style()
+void DemoMyModel::create_1buffer_struct_of_arrays_style()
 {
     constexpr std::array positions = {
         vec2{ -0.2f, 0.2f },
@@ -179,7 +178,7 @@ namespace
 
 }
 
-void DemoVAO::create_1buffer_array_of_structs_style()
+void DemoMyModel::create_1buffer_array_of_structs_style()
 {
     constexpr std::array vertices = {
         Vertex{ vec2{ 0.6f, 0.2f }, color3{ 1, 0, 0 } },
@@ -204,7 +203,7 @@ void DemoVAO::create_1buffer_array_of_structs_style()
     rightEyeModel     = OpenGL::CreateVertexArrayObject(layout, rightEyeIndexBuffer);
 }
 
-void DemoVAO::create_parallel_buffers_style()
+void DemoMyModel::create_parallel_buffers_style()
 {
     constexpr std::array positions = {
         vec2{  0.6f, -0.6f },

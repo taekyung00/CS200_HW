@@ -13,6 +13,7 @@ set(SOURCE_CODE
 
     # TODO add your demo code here
     Demo/DemoVAO.hpp Demo/DemoVAO.cpp
+    Demo/DemoMyModel.hpp Demo/DemoMyModel.cpp
 
     Engine/Engine.hpp Engine/Engine.cpp
     Engine/Error.hpp
